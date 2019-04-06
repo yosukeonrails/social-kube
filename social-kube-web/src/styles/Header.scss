@@ -1,0 +1,34 @@
+.landing-header{
+    h3{
+        margin: 0;
+        margin-right: 10px;
+        float: left;
+        font-size: 15px;
+        color: #424242;
+    }
+    h1 {
+        color: #4714ff;
+        float: left;
+        font-size: 20px;
+        width: 200px;
+        margin: 0;
+    }
+}
+
+.landing-header{
+    height: 35px;
+    padding-top: 1em;
+    padding-left: 2em;
+    background-color: #f9f9f9;
+    box-shadow: -1px -4px 11px 1px #9c9c9c;
+
+    button{
+        width: 100px;
+        height: 20px;
+        border: 1px solid #4e41ff;
+        margin-right: 20px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+}
+
