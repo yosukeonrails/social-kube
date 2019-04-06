@@ -9,27 +9,27 @@ var socket = require('engine.io-client')('ws://localhost:5000');
 class Dashboard extends Component {
 
   componentDidMount() {
-      getUserProfile(
-      this.props.auth, 
-      (profile)=>{  
-          this.props.userInfoAction(profile) 
-          socket.on('open', function(){
-          socket.on('message', function(data){});
-          socket.on('close', function(){});
-      });
-
-        },
-      (e)=>{
-        history.push('/')
+    getUserProfile(
+      this.props.auth,
+      (profile) => {
+        this.props.userInfoAction(profile)
+        socket.on('open', function () {
+          socket.on('message', function (data) { });
+          socket.on('close', function () { });
         });
-    }
 
-    componentDidUpdate(){
-      if(!this.props.userInfo){
-        console.log('pushing')
+      },
+      (e) => {
         history.push('/')
-      }
+      });
+  }
+
+  componentDidUpdate() {
+    if (!this.props.userInfo) {
+      console.log('pushing')
+      history.push('/')
     }
+  }
 
   render() {
     return (
@@ -43,12 +43,12 @@ class Dashboard extends Component {
 
 const mapDispatchToProps = dispatch => ({
   userInfoAction: (profile) => dispatch(userInfoAction(profile))
- })
+})
 
- const mapStateToProps = (state)=>{
-    return {
-       userInfo: state.userInfoReducer.userInfo,
-    }
-  } 
+const mapStateToProps = (state) => {
+  return {
+    userInfo: state.userInfoReducer.userInfo,
+  }
+}
 
-  export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);;
