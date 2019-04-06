@@ -1,56 +1,55 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import getUserProfile from '../helpers/getUserProfile';
 import { userInfoAction } from '../actions/userInfoAction';
-import { connect } from 'react-redux';
 
 class Landing extends Component {
+  constructor(props) {
+    super(props);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
 
-    constructor(props){
-        super(props);
-        this.login= this.login.bind(this);
-        this.logout= this.logout.bind(this);
-    }
+  componentDidMount() {
+    const { auth, userInfoAction, history } = this.props;
 
-    componentDidMount() {
-        getUserProfile(
-        this.props.auth, 
-        (profile)=>{  
-            this.props.userInfoAction(profile);
-            this.props.history.push('/dashboard');
-          },
-          (e)=>{
-            this.props.history.replace('/');
-            });
-      }
-    
-    login(){
-        this.props.auth.login();
-    }
-       
-    logout() {
-        this.props.auth.logout();
-    }
+    getUserProfile(
+      auth,
+      (profile) => {
+        userInfoAction(profile);
+        history.push('/dashboard');
+      },
+      (e) => {
+        history.replace('/');
+      },
+    );
+  }
+
+  login() {
+    const { auth } = this.props;
+    auth.login();
+  }
+
+  logout() {
+    const { auth } = this.props;
+    auth.logout();
+  }
 
   render() {
-
     return (
-        <div>
+      <div>
         <h1> LANDING </h1>
-        </div>
-
+      </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-    userInfoAction: (profile) => dispatch(userInfoAction(profile))
-   })
+  userInfoAction: profile => dispatch(userInfoAction(profile)),
+});
 
-const mapStateToProps = (state)=>{
-    return {
-        userInfo: state.userInfoReducer.userInfo,
-    }
-} 
+const mapStateToProps = state => ({
+  userInfo: state.userInfoReducer.userInfo,
+});
 
-   export default connect(mapStateToProps, mapDispatchToProps)(Landing);;
-
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

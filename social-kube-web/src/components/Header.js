@@ -1,65 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userInfoAction } from '../actions/userInfoAction';
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
+import UserInfoHeader from './UserInfoHeader';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
 
-    constructor(props){
-        super(props);
-        this.login= this.login.bind(this);
-        this.logout= this.logout.bind(this);
-    }
-  
-    login(){
-        this.props.auth.login();
-    }
-       
-    logout() {
-        this.props.auth.logout(()=>{
-          this.props.userInfoAction(null);
-          this.props.history.push('/');
-        });
-    }
+  login() {
+    const { auth } = this.props;
+    auth.login();
+  }
 
-    renderUserInfo(profile){
-      if(!profile){
-          return;
-      }
-      return(
-         <div>  
-          <h3>Hello {profile.given_name} !</h3>
-          <button onClick={this.logout}>Log out</button>
-          </div>
-      );
-    }
+  logout() {
+    const { auth, history, dispatchUserInfoAction } = this.props;
+    auth.logout(() => {
+      dispatchUserInfoAction(null);
+      history.push('/');
+    });
+  }
 
   render() {
-    
-    const loginButton =  <button onClick={this.login}>Log in</button>;
+    console.log(this.props);
+    const { userInfo } = this.props;
 
-    const profile = this.renderUserInfo(this.props.userInfo);
+    const profile = userInfo ? <UserInfoHeader logout={this.logout} userInfo={userInfo} /> : null;
+    const loginButton = profile ? null : <button type="button" onClick={this.login}>Log in</button>;
     return (
-        <div className="landing-header">
-        <h1>Social-Kube    </h1>
- 
-        <div className="landing-log-in">
-        {profile ? profile :loginButton }
-        </div> 
+      <div className="landing-header">
+        <h1>Social-Kube  </h1>
 
+        <div className="landing-log-in">
+          { profile || loginButton }
         </div>
+
+      </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  userInfoAction: () => dispatch(userInfoAction())
- })
+  dispatchUserInfoAction: () => dispatch(userInfoAction()),
+});
 
-const mapStateToProps = (state)=>{
-return {
+const mapStateToProps = state => ({
   userInfo: state.userInfoReducer.userInfo,
-}
-} 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);;
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

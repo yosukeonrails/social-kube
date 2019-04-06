@@ -1,15 +1,10 @@
-// export const userInfoAction = (payload) => dispatch => {
-//     console.log(payload);
-//     dispatch({
-//      type: 'USER_INFO',
-//      payload: payload
-//     })
-//    }
 
-   export function userInfoAction(profile){
-       console.log(profile);
-    return {
-      type:'USER_INFO',
-      payload:profile,
-    }
-  }
+
+export function userInfoAction(profile) {
+  return {
+    type: 'USER_INFO',
+    payload: profile,
+  };
+}
+
+export default userInfoAction;

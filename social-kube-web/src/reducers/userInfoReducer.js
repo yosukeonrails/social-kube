@@ -1,32 +1,24 @@
-import {handle} from 'redux-pack';
+import { handle } from 'redux-pack';
 
 const stateDefault = {
-    userInfo: null,
-}
+  userInfo: null,
+};
 
-
-export default (state , action) => {
-
-    state = state || stateDefault;
-
-    switch (action.type) {
-     case 'USER_INFO':
+export default (state = stateDefault, action) => {
+  switch (action.type) {
+    case 'USER_INFO':
       return {
-       userInfo: action.payload
-      }
+        userInfo: action.payload,
+      };
 
-      case 'LOG_OUT':
+    case 'LOG_OUT':
 
-       return handle(state, action, {
+      return handle(state, action, {
+        failure: s => ({ ...s, logOutError: action.payload }),
+        success: s => ({ ...s, loggedUser: '' }),
+      });
 
-         failure: s => ({ ...s, logOutError:action.payload }),
-
-         success: s => ({ ...s, loggedUser:"" }),
-
-       });
-
-     default:
-      return state
-    }
-   }
-
+    default:
+      return state;
+  }
+};

@@ -1,23 +1,18 @@
 import auth0 from 'auth0-js';
 import { createBrowserHistory } from 'history';
+
 const history = createBrowserHistory();
 
-
 export default class Auth {
-    accessToken;
-    idToken;
-    expiresAt;
-    userProfile;
-  
-    auth0 = new auth0.WebAuth({
-        domain: 'social-kube.auth0.com',
-        clientID: 'GY_AiCZ38TIKfd2r4QMvRJ70W0Bo2P1K',
-        redirectUri: 'http://localhost:3000/callback',
-        responseType: 'token id_token',
-        scope: 'openid profile'
-      });
-    
   constructor() {
+    this.auth0 = new auth0.WebAuth({
+      domain: 'social-kube.auth0.com',
+      clientID: 'GY_AiCZ38TIKfd2r4QMvRJ70W0Bo2P1K',
+      redirectUri: 'http://localhost:3000/callback',
+      responseType: 'token id_token',
+      scope: 'openid profile',
+    });
+
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
@@ -25,7 +20,7 @@ export default class Auth {
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getIdToken = this.getIdToken.bind(this);
     this.renewSession = this.renewSession.bind(this);
-    this.getProfile= this.getProfile.bind(this);
+    this.getProfile = this.getProfile.bind(this);
   }
 
   handleAuthentication(redirect) {
@@ -33,10 +28,8 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult, redirect);
       } else if (err) {
-       // TODOL go home
-       history.replace('/');
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+        // TODOL go home
+        history.replace('/');
       }
     });
   }
@@ -50,38 +43,37 @@ export default class Auth {
   }
 
   setSession(authResult, redirect) {
-  
-  console.log('setting session')  
+    console.log('setting session');
     // Set the time that the access token will expire at
-    let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-    console.log('GOT access token')
-    console.log(authResult.accessToken)
+    const expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    console.log('GOT access token');
+    console.log(authResult.accessToken);
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
-      // Set isLoggedIn flag in localStorage
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('accessToken', this.accessToken)
-      console.log("authenticated");
+    // Set isLoggedIn flag in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('accessToken', this.accessToken);
+    console.log('authenticated');
     // navigate to the home route
-    //TODO: go home 
+    // TODO: go home
     redirect('/dashboard');
   }
 
   renewSession() {
     this.auth0.checkSession({}, (err, authResult) => {
-       if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
-       } else if (err) {
-         this.logout();
-         console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-       }
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        this.logout();
+        console.log(err);
+        alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+      }
     });
   }
 
-  getProfile(cb, authToken ) {
+  getProfile(cb, authToken) {
     this.auth0.client.userInfo(authToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
@@ -100,13 +92,13 @@ export default class Auth {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('accessToken');
     // navigate to the home route
-     cb();
+    cb();
   }
 
   isAuthenticated() {
     // Check whether the current time is past the
     // access token's expiry time
-    let expiresAt = this.expiresAt;
+    const { expiresAt } = this;
     return new Date().getTime() < expiresAt;
   }
 
