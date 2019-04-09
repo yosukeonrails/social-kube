@@ -9,12 +9,15 @@ let UserSchema = new mongoose.Schema({
 		},
 		given_name:{
 			type:String,
+			require:true,
 		},
 		family_name:{
 			type:String,
+			require:true,
 		},
 		nickname: {
 			type:String,
+			require:true,
 		},
 		picture: {
 			type:String,

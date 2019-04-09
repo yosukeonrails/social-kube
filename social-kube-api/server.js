@@ -37,28 +37,31 @@ app.post('/user', (req, res)=>{
   const profile = req.body;
 
   const userData= {
-    user_name:profile.user_name,
-    given_name:profile.given_name,
-    family_name:profile.family_name,
-    nickname:profile.nickname,
-    picture:profile.picture,
-    locale:profile.locale,
-    gender:profile.gender,
+    user_name:profile? profile.user_name : null,
+    given_name:profile? profile.given_name: null,
+    family_name:profile? profile.family_name: null,
+    nickname:profile? profile.nickname: null,
+    picture:profile? profile.picture: null,
+    locale:profile? profile.locale: null,
+    gender:profile? profile.gender: null,
+}
+const {user_name, given_name, family_name} = userData;
+if(!user_name|| !given_name || !family_name){
+  res.status(400).json("User is invalid");
+  return;
 }
 
-User.findOne({user_name : profile.user_name}, function (err, data) {
-
-    if (data.user_name == profile.user_name){
-        res.status(400).json("user already exists");
+User.findOne({user_name : userData.user_name}, function (err, data) {
+    if (data){
+      console.log(data);
+        res.status(200).json("User updated");
     }else{
       User.findOneAndUpdate(
-        { user_name: profile.user_name },
+        { user_name: userData.user_name },
         { $set:userData }, 
         { upsert: true, new: true } , 
         function (err, user) {
-          console.log(user);
-          console.log("Posted User");
-          res.status(201).json("done");
+          res.status(201).json(user);
       });
     }
 });
