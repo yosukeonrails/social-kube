@@ -1,27 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history';
-import { userInfoAction } from '../actions/userInfoAction';
-import getUserProfile from '../helpers/getUserProfile';
+import { userInfoAction, getUserProfile } from '../actions/userInfoAction';
 
 const history = createBrowserHistory();
 const socket = require('engine.io-client')('ws://localhost:5000');
 
 class Dashboard extends Component {
   componentDidMount() {
-    const { auth, dispatchUserInfoAction } = this.props;
-
-    getUserProfile(auth,
-      (profile) => {
-        dispatchUserInfoAction(profile);
-        socket.on('open', () => {
-          socket.on('message', () => { });
-          socket.on('close', () => { });
-        });
-      },
-      () => {
-        history.push('/');
-      });
+    const { auth, history, dispatchGetUserProfile } = this.props;
+    dispatchGetUserProfile(auth);
   }
 
   componentDidUpdate() {
@@ -46,6 +34,7 @@ class Dashboard extends Component {
 
 const mapDispatchToProps = dispatch => ({
   dispatchUserInfoAction: profile => dispatch(userInfoAction(profile)),
+  dispatchGetUserProfile: auth => dispatch(getUserProfile(auth)),
 });
 
 const mapStateToProps = state => ({
