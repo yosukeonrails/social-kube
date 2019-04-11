@@ -27,7 +27,13 @@ let UserSchema = new mongoose.Schema({
 		},
 		gender:{
 			type:String,
-		}
+		},
+		friends:{
+			type:[String],
+		},
+		friend_request:{
+			type:[String],
+		},
 })
 
  module.exports =  mongoose.model('UserSchema', UserSchema);

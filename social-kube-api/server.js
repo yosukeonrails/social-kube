@@ -32,6 +32,21 @@ app.get('/', (req, res)=>{
   res.json("HELLO from server")
 })
 
+app.post('/addFriend', (req, res)=>{
+   User.findOneAndUpdate({user_name: req.body.user_name},{ $push:{friends:req.body.friend} },(err, data)=>{
+    console.log(data);
+    if(!data){
+     return res.status(400).json("something went wrong");
+    }
+    
+    if(err){
+      console.log(err);
+      res.status(404).json("something went wrong");
+    }
+   return res.status(200).json("User updated");
+   })
+})
+
 app.post('/user', (req, res)=>{
 
   const profile = req.body;
