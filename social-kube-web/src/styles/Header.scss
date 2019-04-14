@@ -1,3 +1,4 @@
+
 .landing-header{
     h3{
         margin: 0;
@@ -9,14 +10,11 @@
     h1 {
         color: #4714ff;
         float: left;
-        font-size: 20px;
-        width: 200px;
+        font-size: 1.5em;
+        width: 7em;
         margin: 0;
     }
-}
-
-.landing-header{
-    height: 35px;
+    height: 3em;
     padding-top: 1em;
     padding-left: 2em;
     background-color: #f9f9f9;
@@ -30,5 +28,9 @@
         border-radius: 2px;
         cursor: pointer;
     }
+}
+
+.user-info-header{
+    margin-top: .5em;
 }
 

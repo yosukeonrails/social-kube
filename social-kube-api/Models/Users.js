@@ -31,10 +31,20 @@ let UserSchema = new mongoose.Schema({
 		friends:{
 			type:[String],
 		},
-		friend_request:{
+		friend_requests:{
 			type:[String],
+			default:[],
 		},
+		request_sent:{
+			type:[String],
+			default:[],
+		},
+		full_name:{
+			type:String,
+		}
 })
+
+UserSchema.index({"user_name": "text", "family_name": "text", "given_name": "text", "nickname": "text","full_name": "text"});
 
  module.exports =  mongoose.model('UserSchema', UserSchema);
 

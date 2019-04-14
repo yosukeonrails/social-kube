@@ -1,2 +1,9 @@
 @import 'styles/Landing.scss'; 
 @import 'styles/Header.scss';
+@import 'styles/Search.scss';
+@import 'styles/Dashboard.scss';
+@import 'styles/NotificationBar.scss';
+
+input:focus, textarea {
+	outline: none !important;
+}

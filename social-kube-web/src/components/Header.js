@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { userInfoAction } from '../actions/userInfoAction';
 import UserInfoHeader from './UserInfoHeader';
 
+
 class Header extends Component {
   constructor(props) {
     super(props);

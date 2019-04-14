@@ -5,7 +5,7 @@ function UserInfoHeader(props) {
   const { userInfo, logout } = props;
   const greeting = `Hello ${userInfo.given_name}!`;
   return (
-    <div>
+    <div className="user-info-header">
       <h3>
         {greeting}
         {' '}

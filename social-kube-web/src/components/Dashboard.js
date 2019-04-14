@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import { userInfoAction, getUserProfile } from '../actions/userInfoAction';
+import SearchBar from './SearchBar';
+import SearchResults from './SearchResults';
+import NotificationsBar from './NotificationsBar';
 
 const history = createBrowserHistory();
 const socket = require('engine.io-client')('ws://localhost:5000');
 
 class Dashboard extends Component {
   componentDidMount() {
-    const { auth, history, dispatchGetUserProfile } = this.props;
+    const { auth, dispatchGetUserProfile } = this.props;
+    console.log('getting profile');
     dispatchGetUserProfile(auth);
   }
 
@@ -23,9 +27,15 @@ class Dashboard extends Component {
   }
 
   render() {
+    const notificationBar = this.props.userInfo ? <NotificationsBar /> : null;
+
     return (
-      <div className="App">
-        <h1> Dashboard</h1>
+      <div>
+        <div className="search-box-container">
+          <SearchBar />
+          <SearchResults />
+        </div>
+        {notificationBar}
       </div>
     );
   }

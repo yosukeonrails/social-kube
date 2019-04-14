@@ -83,6 +83,7 @@ export default class Auth {
       });
     } catch (err) {
       // if user's token is not valid.
+      // TODO: handle user login error.
       console.log(err);
       history.push('/');
     }

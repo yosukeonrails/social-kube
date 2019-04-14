@@ -12,17 +12,6 @@ class Landing extends Component {
 
   componentDidMount() {
     const { auth, userInfoAction, history } = this.props;
-
-    getUserProfile(
-      auth,
-      (profile) => {
-        userInfoAction(profile);
-        history.push('/dashboard');
-      },
-      (e) => {
-        history.replace('/');
-      },
-    );
   }
 
   login() {
